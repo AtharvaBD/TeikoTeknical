@@ -111,5 +111,4 @@ cells for responders at `time_from_treatment_start = 0` is **10206.15** (see
 `avgb_cell.py`, also shown in the Part 4 dashboard tab).
 
 ## Dashboard link
-
-[add deployed dashboard URL here]
+https://teikoteknical.streamlit.app/
