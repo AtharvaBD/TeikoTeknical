@@ -2,10 +2,14 @@
 import sqlite3
 import pandas as pd
 import pathlib
+import yaml
+
+with open("config.yml") as f:
+    config = yaml.safe_load(f)
 
 #Database
-DB_PATH = "cell_count.db"
-CSV_PATH = "cell-count.csv"
+DB_PATH = config["DB"]
+CSV_PATH = config["CSV"]
 
 #Define Schema
 SCHEMA = """
