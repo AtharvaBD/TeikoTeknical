@@ -4,10 +4,10 @@ setup:
 	pip install -r requirements.txt
 
 pipeline:
-	python load_data.py
-	python InitialAnalysis.py
-	python StatistialAnalysis.py
-	python SubsetAnalysis.py
+	python pipeline/load_data.py
+	python pipeline/InitialAnalysis.py
+	python pipeline/StatistialAnalysis.py
+	python pipeline/DataSubsetAnalysis.py
 
 dashboard:
-	streamlit run dashboard.py
+	streamlit run InteractiveDashboard.py

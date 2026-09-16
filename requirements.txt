@@ -1,7 +1,0 @@
-pandas
-PyYAML
-matplotlib
-scipy
-statsmodels
-streamlit
-plotly

@@ -1,14 +1,9 @@
 #import
 import sqlite3
 import pandas as pd
-import yaml
-
-with open("config.yml") as f:
-    config = yaml.safe_load(f)
 
 #Paths
-DB_path = config["DB"]
-
+db_path = "cell_count.db"
 
 def cell_population_frequencies(conn):
     """Part 2: relative frequency of each cell population in each sample.
@@ -31,7 +26,7 @@ def cell_population_frequencies(conn):
  
  
 if __name__ == "__main__":
-    conn = sqlite3.connect(DB_path)
+    conn = sqlite3.connect(db_path)
     freq = cell_population_frequencies(conn)
     print(freq.head(10))
     print(f"\nTotal rows: {len(freq)}")

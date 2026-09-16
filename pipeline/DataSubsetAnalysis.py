@@ -1,13 +1,9 @@
 #imports
 import sqlite3
 import pandas as pd
-import yaml
- 
-with open("config.yml") as f:
-    config = yaml.safe_load(f)
  
 #Paths
-DB_path = config["DB"]
+db_path = "cell_count.db"
 
 def baseline_melanoma_miraclib_pbmc(conn):
     """All melanoma + PBMC + time_from_treatment_start = 0 samples from subjects treated with miraclib.
@@ -60,11 +56,21 @@ def baseline_breakdown(conn):
         .reset_index()
         .rename(columns={"subject": "n_subjects"})
     )
- 
+
+    by_project = _add_total_row(by_project, "project", "n_samples")
+    by_response = _add_total_row(by_response, "response", "n_subjects")
+    by_sex = _add_total_row(by_sex, "sex", "n_subjects")
+
     return {"by_project": by_project, "by_response": by_response, "by_sex": by_sex}
 
+
+def _add_total_row(df, label_col, count_col):
+    """Append a 'Total' row summing count_col, for display under a breakdown table."""
+    total = pd.DataFrame({label_col: ["Total"], count_col: [df[count_col].sum()]})
+    return pd.concat([df, total], ignore_index=True)
+
 if __name__ == "__main__":
-    conn = sqlite3.connect(DB_path)
+    conn = sqlite3.connect(db_path)
  
     baseline = baseline_melanoma_miraclib_pbmc(conn)
     print(f"Baseline melanoma/PBMC/miraclib samples: {len(baseline)}")

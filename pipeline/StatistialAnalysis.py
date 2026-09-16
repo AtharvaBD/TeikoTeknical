@@ -1,17 +1,12 @@
 #imports
 import sqlite3
 import pandas as pd
-import yaml
 import matplotlib.pyplot as plt
 from scipy.stats import ttest_ind
 from statsmodels.stats.multitest import multipletests
 
-
-with open("config.yml") as f:
-    config = yaml.safe_load(f)
-
 #Paths
-DB_path = config["DB"]
+db_path = "cell_count.db"
 
 
 def cell_population_frequencies(conn):
@@ -60,7 +55,7 @@ def responder_frequencies(conn):
     return merged[["sample", "population", "percentage", "response"]]
 
 
-def plot_responder_boxplots(df, out_path = config["BOXPLOTS"]):
+def plot_responder_boxplots(df, out_path = "Boxplots.png"):
 
     # One boxplot per population, responders vs non-responders.
     populations = sorted(df["population"].unique())
@@ -113,7 +108,7 @@ def responder_significance(df):
  
  
 if __name__ == "__main__":
-    conn = sqlite3.connect(DB_path)
+    conn = sqlite3.connect(db_path)
 
     #Overall frequency table
     freq = cell_population_frequencies(conn)

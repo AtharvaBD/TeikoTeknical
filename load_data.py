@@ -2,14 +2,10 @@
 import sqlite3
 import pandas as pd
 import pathlib
-import yaml
-
-with open("config.yml") as f:
-    config = yaml.safe_load(f)
 
 #Database
-DB_PATH = config["DB"]
-CSV_PATH = config["CSV"]
+db_path = "cell_count.db"
+csv_path = "cell-count.csv"
 
 #Define Schema
 SCHEMA = """
@@ -44,13 +40,13 @@ POPULATIONS = ["b_cell", "cd8_t_cell", "cd4_t_cell", "nk_cell", "monocyte"]
 
 def main():
     # start fresh each run so `make pipeline` is idempotent
-    pathlib.Path(DB_PATH).unlink(missing_ok=True)
+    pathlib.Path(db_path).unlink(missing_ok=True)
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(db_path)
     conn.execute("PRAGMA foreign_keys = ON;")
     conn.executescript(SCHEMA)
 
-    df = pd.read_csv(CSV_PATH)
+    df = pd.read_csv(csv_path)
 
     # --- subjects: one row per unique subject ---
     subjects = (
@@ -78,7 +74,7 @@ def main():
     conn.commit()
     conn.close()
     print(f"Loaded {len(subjects)} subjects, {len(samples)} samples, "
-          f"{len(cell_counts)} cell_count rows into {DB_PATH}")
+          f"{len(cell_counts)} cell_count rows into {db_path}")
 
 
 if __name__ == "__main__":
