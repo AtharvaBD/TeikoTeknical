@@ -106,7 +106,7 @@ with tab3:
 
 # Data Subset Analysis
 with tab4:
-    st.header("Datas subset analysis")
+    st.header("Data subset analysis")
     st.caption("Melanoma AND PBMC AND miraclib AND time_from_treatment_start = 0")
  
     baseline = baseline_melanoma_miraclib_pbmc(conn)
@@ -145,3 +145,21 @@ with tab4:
             use_container_width=True,
             hide_index=True,
         )
+
+    st.divider()
+    st.subheader("Average B cell count — melanoma males, responders, t=0")
+    st.caption("All sample types and treatments (not restricted to PBMC/miraclib)")
+    avg_b_cell = conn.execute(
+        """
+        SELECT ROUND(AVG(cc.count), 2)
+        FROM cell_counts cc
+        JOIN samples s ON cc.sample_id = s.sample_id
+        JOIN subjects sub ON s.subject_id = sub.subject_id
+        WHERE sub.condition = 'melanoma'
+          AND sub.sex = 'M'
+          AND sub.response = 'yes'
+          AND s.time_from_treatment_start = 0
+          AND cc.population = 'b_cell';
+        """
+    ).fetchone()[0]
+    st.metric("Average B cell count", f"{avg_b_cell:.2f}")
