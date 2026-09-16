@@ -60,16 +60,18 @@ with tab2:
 with tab3:
     st.header("Statistical Analysis")
     st.caption("Melanoma AND PBMC samples AND miraclib treatment")
- 
+
     resp_freq = responder_frequencies(conn)
 
-    st.subheader("Responder_frequencies (melanoma AND PBMC AND miraclib)")
+    st.subheader("Responder frequencies (melanoma AND PBMC AND miraclib)")
+    samples = sorted(resp_freq["sample"].unique())
     selected_samples = st.multiselect(
-        "Filter by sample (leave empty to show all)", resp_freq, default=[]
+        "Filter by sample (leave empty to show all)", samples, default=[]
     )
-    view = freq[freq["sample"].isin(selected_samples)] if selected_samples else freq
- 
+    view = resp_freq[resp_freq["sample"].isin(selected_samples)] if selected_samples else resp_freq
+
     st.dataframe(view, use_container_width=True, hide_index=True)
+    st.caption(f"{len(view)} rows")
  
     fig = px.box(
         resp_freq,
