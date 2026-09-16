@@ -10,7 +10,7 @@ with open("config.yml") as f:
 DB_path = config["DB"]
 
 
-def cell_population_frequencies(conn: sqlite3.Connection):
+def cell_population_frequencies(conn):
     """Part 2: relative frequency of each cell population in each sample.
  
     Returns one row per (sample, population) with columns:

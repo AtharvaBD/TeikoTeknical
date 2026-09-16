@@ -80,7 +80,7 @@ def plot_responder_boxplots(df, out_path = config["BOXPLOTS"]):
     return out_path
 
 
-def responder_significance(df: pd.DataFrame) -> pd.DataFrame:
+def responder_significance(df):
     """Perform a T-test per population, responder vs non-responder. 
         Returns one row per population with columns:
         population, n_responder, n_non_responder, mean_responder,
