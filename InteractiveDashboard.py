@@ -24,7 +24,7 @@ st.set_page_config(page_title="Loblaw Bio - Cell Population Dashboard", layout="
 
 conn = sqlite3.connect(db_path)
 st.title("Immune Cell Population Dashboard")
-st.caption("Miraclib clinical trial — melanoma responder analysis")
+st.caption("Bob Loblaw - Loblow Bio analysis")
 
 tab2, tab3, tab4 = st.tabs(
     ["Part 2 — Initial Analysis", "Part 3 — Statistical Analysis", "Part 4 — Data Subset Analysis"]
@@ -58,10 +58,18 @@ with tab2:
 
 # Statistical Analysis
 with tab3:
-    st.header("Responders vs non-responders")
-    st.caption("Melanoma · PBMC samples · miraclib treatment")
+    st.header("Statistical Analysis")
+    st.caption("Melanoma AND PBMC samples AND miraclib treatment")
  
     resp_freq = responder_frequencies(conn)
+
+    st.subheader("Responder_frequencies (melanoma AND PBMC AND miraclib)")
+    selected_samples = st.multiselect(
+        "Filter by sample (leave empty to show all)", resp_freq, default=[]
+    )
+    view = freq[freq["sample"].isin(selected_samples)] if selected_samples else freq
+ 
+    st.dataframe(view, use_container_width=True, hide_index=True)
  
     fig = px.box(
         resp_freq,
@@ -79,7 +87,7 @@ with tab3:
     significance = responder_significance(resp_freq)
  
     def highlight_significant(row):
-        color = "background-color: #d4f7d4" if row["significant"] else ""
+        color = "background-color: #598722" if row["significant"] else ""
         return [color] * len(row)
  
     st.dataframe(
@@ -101,7 +109,7 @@ with tab4:
  
     baseline = baseline_melanoma_miraclib_pbmc(conn)
 
-    st.subheader("Baseline samples (melanoma, PBMC, miraclib, t=0)")
+    st.subheader("Baseline samples (melanoma AND PBMC AND miraclib AND t=0)")
     st.dataframe(baseline, use_container_width=True, hide_index=True)
     st.metric("Total Baseline samples", len(baseline))
 
@@ -110,7 +118,7 @@ with tab4:
     def highlight_total(row):
         label_col = row.index[0]
         is_total = row[label_col] == "Total"
-        style = "font-weight: bold; background-color: #f0f2f6" if is_total else ""
+        style = "font-weight: bold; background-color: #1c106c" if is_total else ""
         return [style] * len(row)
 
     col1, col2, col3 = st.columns(3)
