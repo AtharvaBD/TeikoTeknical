@@ -11,4 +11,4 @@ pipeline:
 	python avgb_cell.py
 
 dashboard:
-	streamlit run InteractiveDashboard.py
+	python -m streamlit run InteractiveDashboard.py
