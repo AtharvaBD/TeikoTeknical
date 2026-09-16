@@ -1,6 +1,6 @@
-pandas
-scipy
-statsmodels
-matplotlib
-streamlit
-plotly
+pandas==3.0.5
+scipy==1.18.1
+statsmodels==0.15.0
+matplotlib==3.11.2
+streamlit==1.64.0
+plotly==7.1.0
